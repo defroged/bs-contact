@@ -1,3 +1,22 @@
+module.exports = (req, res) => {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Adjust the '*' to your domain for better security
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle preflight requests for CORS
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  // Make sure you're only processing POST requests
+  if (req.method !== 'POST') {
+    res.status(405).send('Method Not Allowed');
+    return;
+  }
+
+
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
@@ -7,14 +26,12 @@ const port = 3000; // Port number can be changed as needed
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Replace with your email configuration
+
 const transporter = nodemailer.createTransport({
-  host: 'smtp.example.com', // SMTP host
-  port: 587, // SMTP port
-  secure: false, // true for 465, false for other ports
+  service: 'gmail',
   auth: {
-    user: 'your-email@example.com', // your email
-    pass: 'your-password' // your email password
+    user: process.env.EMAIL_USER, // Your Gmail address
+    pass: process.env.EMAIL_PASS  // Your Gmail password
   }
 });
 
@@ -90,3 +107,5 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
+
+};
