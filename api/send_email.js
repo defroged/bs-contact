@@ -32,8 +32,8 @@ const emailBody = `
 <head>
   <style>
     body { font-family: Arial, sans-serif; }
-    .header { color: #333366; font-size: 18px; font-weight: bold; margin-top: 20px; }
-    .content { margin-bottom: 10px; }
+    .header { color: #333366; font-size: 15px; font-weight: bold; margin-top: 16px; }
+    .content { margin-bottom: 8px; }
     .label { color: #333333; }
     .value { margin-left: 10px; }
   </style>
