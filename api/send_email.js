@@ -24,6 +24,7 @@ async function handleFormSubmission(body) {
   const learning_duration = sanitizeInput(body.learning_duration);
   const find_out = sanitizeInput(body.find_out);
   const friend = sanitizeInput(body.friend);
+  const taiken = sanitizeInput(body.taiken);
   const special_coupon = sanitizeInput(body.special_coupon);
   const inquiry = sanitizeInput(body.inquiry);
 
