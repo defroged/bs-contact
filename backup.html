@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Form</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+}
+
+.main-label {
+	font-weight: bold;
+}
+
+
+#contact-form {
+  max-width: 800px;
+  width: 90%;
+  margin: 40px auto 20px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="phone"],
+.form-group input[type="age"],
+.form-group textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  height: 150px;
+  resize: none;
+}
+
+/* Align radio buttons and checkboxes to the left of the label */
+.radio-group label,
+.checkbox-group label {
+  display: block;
+  position: relative;
+  padding-left: 27px;
+  margin-bottom: 21px;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 23px;
+}
+
+.radio-group input[type="radio"],
+.checkbox-group input[type="checkbox"] {
+  position: absolute;
+  /*! left: 0; */
+  /*! top: 50%; */
+  transform: translateY(-50%);
+  margin-top: 12px;
+}
+
+/* Submit button styling */
+button[type="submit"] {
+  padding: 10px 10px;
+  width: 20%;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #contact-form {
+    width: 90%;
+    margin-top: 20px;
+  }
+
+  .form-group,
+  .checkbox-group,
+  .recaptcha,
+  button[type="submit"] {
+    width: calc(100% - 20px);
+  }
+
+  button[type="submit"] {
+    padding: 5px;
+    font-size: 16px;
+    width: 34%;
+    border-radius: 15px;
+  }
+
+  /* Increase padding for touch targets on mobile */
+  .radio-group label,
+  .checkbox-group label {
+    padding-left: 35px;
+  }
+}
+
+/* reCAPTCHA placeholder styles */
+.recaptcha {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.recaptcha input[type="checkbox"] {
+  margin-right: 99px;
+  margin-top: 9px;
+}
+
+/* Adjustments for checkbox column direction */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-group input[type="checkbox"] {
+  /*! margin-bottom: 10px; */
+}
+
+.checkbox-group label {
+  margin-left: 5px;
+  display: block;
+  margin-top: 0;
+}
+
+</style>
+</head>
+<body>
+  <form id="contact-form">
+    <div class="form-group">
+  <label for="full-name" class="main-label"><span style="color: #B94A48;">＊</span>お名前（保護者）</label>
+  <input type="text" id="full-name" name="full_name" required>
+</div>
+
+	<div class="form-group">
+      <label for="child-name" class="main-label">お子様のお名前</label>
+      <input type="text" id="child-name" name="child_name">
+    </div>
+	<div class="form-group">
+      <label for="child-furi" class="main-label">お子様のお名前（フリガナ）</label>
+      <input type="text" id="child-furi" name="child_furi">
+    </div>
+    <div class="form-group">
+	<label for="email" class="main-label"><span style="color: #B94A48;">＊</span>メールアドレス</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+	<div class="form-group">
+	<label for="phone" class="main-label"><span style="color: #B94A48;">＊</span>電話番号【ハイフンなし）</label>
+      <input type="phone" id="phone" name="phone" required>
+    </div>
+    <div class="form-group">
+      <label for="years" class="main-label" class="main-label"><span style="color: #B94A48;">＊</span>学年</label>
+      <select id="years" name="years" required>
+	    <option value="2～3歳児" selected="selected">2～3歳児</option>
+        <option value="年少（3～4歳児）">年少（3～4歳児）</option>
+        <option value="年中（4～5歳児）">年中（4～5歳児）</option>
+		<option value="年長（5～6歳児）">年長（5～6歳児）</option>
+		<option value="小1">小1</option>
+		<option value="小2">小2</option>
+		<option value="小3">小3</option>
+		<option value="小4">小4</option>
+		<option value="小5">小5</option>
+		<option value="小6">小6</option>
+		<option value="中学生">中学生</option>
+		<option value="高校生">高校生</option>
+		<option value="大人">大人</option>
+      </select>
+    </div>
+	<div class="form-group">
+	<label for="age" class="main-label">2～3歳児を選んだ方は年齢・月齢をご記入ください。</label>
+      <input type="text" id="age" name="age">
+    </div>
+	<br>
+    <div class="form-group">
+      <label for="native-or-returnee" class="main-label"><span style="color: #B94A48;">＊</span>Native/Returnees（帰国子女）</label>
+      <div class="radio-group">
+        <input type="radio" id="native-yes" name="native" value="yes">
+        <label for="native-yes">Yes</label>
+        <input type="radio" id="native-no" name="native" value="no" checked>
+        <label for="native-no">No</label>
+      </div>
+	  <br>
+    </div>
+    <div class="form-group">
+  <label for="learning-duration" class="main-label">英語学習の経験は？</label>
+  <div class="radio-group">
+    <input type="radio" id="duration-none" name="learning_duration" value="なし" checked>
+    <label for="duration-none">なし</label>
+    <input type="radio" id="duration-short" name="learning_duration" value="1年未満">
+    <label for="duration-short">1年未満</label>
+    <input type="radio" id="duration-medium" name="learning_duration" value="2年未満">
+    <label for="duration-medium">2年未満</label>
+    <input type="radio" id="duration-long" name="learning_duration" value="2年以上">
+    <label for="duration-long">2年以上</label>
+  </div>
+</div>
+
+	<br>
+
+        <div class="form-group">
+      <label for="find-out" class="main-label"><span style="color: #B94A48;">＊</span>当教室を知ったきっかけ</label>
+<div class="form-group">
+  <div class="radio-group">
+    <input type="radio" id="know-from-flyer" name="find_out" value="チラシ" checked required>
+    <label for="know-from-flyer">チラシ</label>
+    <input type="radio" id="know-from-instagram" name="find_out" value="Instagram">
+    <label for="know-from-instagram">Instagram</label>
+    <input type="radio" id="know-from-sns-ad" name="find_out" value="SNS広告">
+    <label for="know-from-sns-ad">SNS広告</label>
+    <input type="radio" id="know-from-search" name="find_out" value="検索">
+    <label for="know-from-search">検索</label>
+    <input type="radio" id="know-from-passing-by" name="find_out" value="教室の前を通りかかって">
+    <label for="know-from-passing-by">教室の前を通りかかって</label>
+    <input type="radio" id="know-from-acquaintance" name="find_out" value="知人の紹介">
+    <label for="know-from-acquaintance">知人の紹介</label>
+  </div>
+</div>
+<div class="form-group">
+	<label for="friend" class="main-label">紹介者のお名前</label>
+      <input type="text" id="friend" name="friend">
+    </div>
+</div>
+	<br>
+    <div class="form-group">
+	<div class="checkbox-group">
+        <input type="checkbox" id="taiken" name="taiken" value="yes">
+        <label for="taiken" class="main-label">体験レッスンを申し込む</label>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="special-coupon" name="special_coupon" value="yes">
+        <label for="special-coupon" class="main-label">Special Couponを持っている</label>
+      </div>
+	  <br>
+	  
+	  <div class="form-group">
+	<label for="inquiry" class="main-label">メッセージ</label>
+      <textarea id="inquiry" name="inquiry"></textarea>
+    </div>
+    </div>
+
+<div style="display:none">
+  <input type="text" id="honeypot" name="honeypot" value="">
+</div>
+
+    <div class="form-group">
+      <button type="submit">送信</button>
+    </div>
+  </form>  
+
+<script>
+$(document).ready(function (){
+  $("#contact-form").submit(function (e){
+    e.preventDefault();
+
+    if($("#honeypot").val() !== "") {
+      alert("Spam detected!");
+      return; 
+    }
+
+    var phoneNumber = $("#phone").val();
+    var phoneNumberPattern = /^[0-9]+$/; 
+    if (!phoneNumberPattern.test(phoneNumber)) {
+      alert("電話番号は数字のみを含めてください（ハイフンなし）");
+      return; 
+    }
+
+    var formData = $(this).serialize();
+
+    $.ajax({
+      type: "POST",
+      url: "https://bs-contact.vercel.app/api/send_email",
+      data: formData,
+      contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+      processData: true,
+      success: function (response) {
+        alert("送信されました！");
+        
+        window.location.href = "https://www.bluestar-english.com"; 
+      },
+      error: function (errResponse) {
+        alert("エラーが発生しました");
+      }
+    });
+  });
+});
+
+</script>
+
+</body>
+</html>
