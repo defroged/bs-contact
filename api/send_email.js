@@ -11,7 +11,7 @@ const sanitizeInput = (input) => {
 
 async function handleFormSubmission(body) {
   const emailTo = "hello@bluestar-english.com";
-  const emailSubject = "New contact form submission";
+  const emailSubject = "Blue Star お問い合わせ";
 
   const full_name = sanitizeInput(body.full_name);
   const child_name = sanitizeInput(body.child_name);
@@ -20,7 +20,7 @@ async function handleFormSubmission(body) {
   const phone = sanitizeInput(body.phone);
   const years = sanitizeInput(body.years);
   const age = sanitizeInput(body.age);
-  const experience = sanitizeInput(body.experience);
+  const native = sanitizeInput(body.native);
   const learning_duration = sanitizeInput(body.learning_duration);
   const find_out = sanitizeInput(body.find_out);
   const friend = sanitizeInput(body.friend);
@@ -29,15 +29,15 @@ async function handleFormSubmission(body) {
   const inquiry = sanitizeInput(body.inquiry);
 
   const emailBody = `
-Full Name: ${full_name}
-Child Name: ${child_name}
-Child Name (Furigana): ${child_furi}
+保護者のお名前: ${full_name}
+お子様のお名前: ${child_name}
+お子様のお名前（フリガナ）: ${child_furi}
 Email: ${email}
-Phone: ${phone}
-Years: ${years}
-Age: ${age}
-Experience: ${experience}
-Learning Duration: ${learning_duration}
+電話: ${phone}
+学年: ${years}
+2～３歳児の年齢: ${age}
+帰国子女: ${native}
+経験: ${learning_duration}
 Find Out: ${find_out}
 Friend: ${friend}
 Special Coupon: ${special_coupon}
