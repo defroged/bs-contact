@@ -46,9 +46,9 @@ Inquiry: ${inquiry}
 `;
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.hostmonster.com',
+  host: 'mail.bluestar-english.com',
   port: 465,
-  secure: true, // Use true for SSL or false for TLS (default)
+  secure: true, 
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
