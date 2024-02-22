@@ -25,24 +25,79 @@ async function handleFormSubmission(body) {
   const find_out = sanitizeInput(body.find_out);
   const friend = sanitizeInput(body.friend);
   const special_coupon = sanitizeInput(body.special_coupon);
-  const other_option = sanitizeInput(body.other_option);
   const inquiry = sanitizeInput(body.inquiry);
 
-  const emailBody = `
-保護者のお名前: ${full_name}
-お子様のお名前: ${child_name}
-お子様のお名前（フリガナ）: ${child_furi}
-Email: ${email}
-電話: ${phone}
-学年: ${years}
-2～３歳児の年齢: ${age}
-帰国子女: ${native}
-経験: ${learning_duration}
-Find Out: ${find_out}
-Friend: ${friend}
-Special Coupon: ${special_coupon}
-Other Option: ${other_option}
-Inquiry: ${inquiry}
+const emailBody = `
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .header { color: #333366; font-size: 18px; font-weight: bold; margin-top: 20px; }
+    .content { margin-bottom: 10px; }
+    .label { color: #333333; }
+    .value { margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <span class="header">お問い合わせ内容</span>
+  </div>
+  <div class="content">
+    <span class="label">保護者のお名前:</span>
+    <span class="value">${full_name}</span>
+  </div>
+  <div class="content">
+    <span class="label">お子様のお名前:</span>
+    <span class="value">${child_name}</span>
+    <br>
+    <span class="label">お子様のお名前（フリガナ）:</span>
+    <span class="value">${child_furi}</span>
+  </div>
+  <div class="content">
+    <span class="header">連絡先</span>
+  </div>
+  <div class="content">
+    <span class="label">Email:</span>
+    <span class="value">${email}</span>
+    <br>
+    <span class="label">電話:</span>
+    <span class="value">${phone}</span>
+  </div>
+  <div class="content">
+    <span class="header">教育情報</span>
+  </div>
+  <div class="content">
+    <span class="label">学年:</span>
+    <span class="value">${years}</span>
+    <br>
+    <span class="label">2～3歳児の年齢:</span>
+    <span class="value">${age}</span>
+    <br>
+    <span class="label">帰国子女:</span>
+    <span class="value">${native === 'yes' ? 'はい' : 'いいえ'}</span>
+    <br>
+    <span class="label">英語学習の経験:</span>
+    <span class="value">${learning_duration}</span>
+  </div>
+  <div class="content">
+    <span class="header">その他の情報</span>
+  </div>
+  <div class="content">
+    <span class="label">知ったきっかけ:</span>
+    <span class="value">${find_out}</span>
+    <br>
+    <span class="label">紹介者のお名前:</span>
+    <span class="value">${friend}</span>
+    <br>
+    <span class="label">Special Coupon:</span>
+    <span class="value">${special_coupon ? '持っている' : '持っていない'}</span>
+  </div>
+  <div class="content">
+    <span class="header">お問い合わせ内容</span>
+    <p>${inquiry}</p>
+  </div>
+</body>
+</html>
 `;
 
 const transporter = nodemailer.createTransport({
@@ -59,7 +114,7 @@ const transporter = nodemailer.createTransport({
     from: 'hello@bluestar-english.com',
     to: emailTo,
     subject: emailSubject,
-    text: emailBody,
+    html: emailBody,
     replyTo: body.email
   };
 
