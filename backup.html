@@ -307,20 +307,21 @@ $(document).ready(function (){
     var formData = $(this).serialize();
 
     $.ajax({
-      type: "POST",
-      url: "https://bs-contact.vercel.app/api/send_email",
-      data: formData,
-      contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-      processData: true,
-      success: function (response) {
-        alert("送信されました！");
-        
-        window.location.href = "https://www.bluestar-english.com"; 
-      },
-      error: function (errResponse) {
-        alert("エラーが発生しました");
-      }
-    });
+  type: "POST",
+  url: "https://bs-contact.vercel.app/api/send_email",
+  data: formData,
+  contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+  processData: true,
+  success: function (response) {
+    alert("送信されました！\n\n24時間以内にお返事をいたします。\n\n2日経っても返信がない場合は、恐れ入りますがお電話をお願い致します。");
+    
+    window.location.href = "https://www.bluestar-english.com"; 
+  },
+  error: function (errResponse) {
+    alert("エラーが発生しました");
+  }
+});
+
   });
 });
 
