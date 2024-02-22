@@ -291,6 +291,13 @@ $(document).ready(function (){
       return; 
     }
 
+    var yearsSelected = $("#years").val();
+    var ageInput = $("#age").val().trim();
+    if (yearsSelected === "2～3歳児" && ageInput === "") {
+      alert("2～3歳児を選んだ方は年齢・月齢をご記入ください。");
+      return; 
+    }
+
     var formData = $(this).serialize();
 
     $.ajax({
@@ -310,6 +317,7 @@ $(document).ready(function (){
     });
   });
 });
+
 
 </script>
 
