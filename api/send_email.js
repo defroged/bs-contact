@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const querystring = require('querystring');
 
 const sanitizeInput = (input) => {
   return String(input)
@@ -83,7 +84,7 @@ module.exports = async (req, res) => {
   });
   req.on('end', async () => {
     try {
-      body = JSON.parse(body);
+      body = querystring.parse(body);
       await handleFormSubmission(body);
       res.status(200).json({ message: 'Email sent successfully' });
     } catch (e) {
