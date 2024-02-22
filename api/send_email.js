@@ -56,7 +56,7 @@ const transporter = nodemailer.createTransport({
 });
 
   const mailOptions = {
-    from: 'noreply@bluestar-english.com',
+    from: 'hello@bluestar-english.com',
     to: emailTo,
     subject: emailSubject,
     text: emailBody,
