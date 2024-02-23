@@ -278,53 +278,77 @@ button[type="submit"]:hover {
 
 <script>
 $(document).ready(function (){
+  // Function to check for URL patterns in input values
+  function containsURL(value) {
+    var urlPattern = /https?:\/\/[^\s]+/;
+    return urlPattern.test(value);
+  }
+
   $("#contact-form").submit(function (e){
     e.preventDefault();
 
+    // Check for spam using the honeypot technique
     if($("#honeypot").val() !== "") {
       alert("Spam detected!");
-      return; 
+      return;
     }
 
+    // Validate phone number format (digits only, no hyphens)
     var phoneNumber = $("#phone").val();
-    var phoneNumberPattern = /^[0-9]+$/; 
+    var phoneNumberPattern = /^[0-9]+$/;
     if (!phoneNumberPattern.test(phoneNumber)) {
       alert("電話番号は数字のみを含めてください（ハイフンなし）");
-      $("#phone").focus(); // Set focus to the phone input
-      $("#phone")[0].scrollIntoView({behavior: "smooth", block: "center"}); // Smoothly scroll to the phone input
-      return; 
+      $("#phone").focus();
+      $("#phone")[0].scrollIntoView({behavior: "smooth", block: "center"});
+      return;
     }
 
+    // Check if URL is present in any text input or textarea
+    var invalidURL = false;
+    $("#contact-form input[type=text], #contact-form textarea").each(function() {
+      if (containsURL($(this).val())) {
+        invalidURL = true;
+        alert("入力項目にURLを含めないでください。");
+        $(this).focus();
+        $(this)[0].scrollIntoView({behavior: "smooth", block: "center"});
+        return false; // Break the loop
+      }
+    });
+
+    if (invalidURL) {
+      return; // Stop form submission if any URL is found
+    }
+
+    // Validate age input if specific option is selected
     var yearsSelected = $("#years").val();
     var ageInput = $("#age").val().trim();
     if (yearsSelected === "2～3歳児" && ageInput === "") {
       alert("2～3歳児を選んだ方は年齢・月齢をご記入ください。");
-      $("#age").focus(); // Set focus to the age input
-      $("#age")[0].scrollIntoView({behavior: "smooth", block: "center"}); // Smoothly scroll to the age input
-      return; 
+      $("#age").focus();
+      $("#age")[0].scrollIntoView({behavior: "smooth", block: "center"});
+      return;
     }
 
+    // Collect form data
     var formData = $(this).serialize();
 
+    // Perform AJAX request to submit the form data
     $.ajax({
-  type: "POST",
-  url: "https://bs-contact.vercel.app/api/send_email",
-  data: formData,
-  contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-  processData: true,
-  success: function (response) {
-    alert("送信されました！\n\n24時間以内にお返事をいたします。\n\n2日経っても返信がない場合は、恐れ入りますがお電話をお願い致します。");
-    
-    window.location.href = "https://www.bluestar-english.com"; 
-  },
-  error: function (errResponse) {
-    alert("エラーが発生しました");
-  }
-});
-
+      type: "POST",
+      url: "https://bs-contact.vercel.app/api/send_email",
+      data: formData,
+      contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+      processData: true,
+      success: function (response) {
+        alert("送信されました！\n\n24時間以内にお返事をいたします。\n\n2日経っても返信がない場合は、恐れ入りますがお電話をお願い致します。");
+        window.location.href = "https://www.bluestar-english.com"; 
+      },
+      error: function (errResponse) {
+        alert("エラーが発生しました");
+      }
+    });
   });
 });
-
 </script>
 
 </body>
