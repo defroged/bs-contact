@@ -26,7 +26,6 @@ async function handleFormSubmission(body) {
   const friend = sanitizeInput(body.friend);
   const taiken = sanitizeInput(body.taiken);
   const special_coupon = sanitizeInput(body.special_coupon);
-  const special_coupon = sanitizedSpecialCoupon === 'yes' ? 'yes' : 'no';
   const inquiry = sanitizeInput(body.inquiry);
 
 const emailBody = `
@@ -92,7 +91,7 @@ const emailBody = `
     <span class="value">${friend}</span>
     <br>
     <span class="label">Special Coupon:</span>
-    <span class="value">${special_coupon === 'yes' ? '持っている' : '持っていない'}</span>
+    <span class="value">${special_coupon ? '持っている' : '持っていない'}</span>
   </div>
   <div class="content">
     <span class="header">お問い合わせ内容</span>
