@@ -122,18 +122,6 @@ button[type="submit"]:hover {
   }
 }
 
-/* reCAPTCHA placeholder styles */
-.recaptcha {
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.recaptcha input[type="checkbox"] {
-  margin-right: 99px;
-  margin-top: 9px;
-}
-
 /* Adjustments for checkbox column direction */
 .checkbox-group {
   display: flex;
@@ -278,22 +266,21 @@ button[type="submit"]:hover {
 
 <script>
 $(document).ready(function (){
-  // Function to check for URL patterns in input values
   function containsURL(value) {
-    var urlPattern = /https?:\/\/[^\s]+/;
+    var urlPattern = /https?:\/\/[^\s]+|www\.[^\s]+/;
     return urlPattern.test(value);
   }
 
   $("#contact-form").submit(function (e){
     e.preventDefault();
 
-    // Check for spam using the honeypot technique
+
     if($("#honeypot").val() !== "") {
       alert("Spam detected!");
       return;
     }
 
-    // Validate phone number format (digits only, no hyphens)
+
     var phoneNumber = $("#phone").val();
     var phoneNumberPattern = /^[0-9]+$/;
     if (!phoneNumberPattern.test(phoneNumber)) {
@@ -303,23 +290,21 @@ $(document).ready(function (){
       return;
     }
 
-    // Check if URL is present in any text input or textarea
     var invalidURL = false;
     $("#contact-form input[type=text], #contact-form textarea").each(function() {
       if (containsURL($(this).val())) {
         invalidURL = true;
-        alert("入力項目にURLを含めないでください。");
+        alert("入力項目にURLや「www」を含めないでください。");
         $(this).focus();
         $(this)[0].scrollIntoView({behavior: "smooth", block: "center"});
-        return false; // Break the loop
+        return false; 
       }
     });
 
     if (invalidURL) {
-      return; // Stop form submission if any URL is found
+      return; 
     }
 
-    // Validate age input if specific option is selected
     var yearsSelected = $("#years").val();
     var ageInput = $("#age").val().trim();
     if (yearsSelected === "2～3歳児" && ageInput === "") {
@@ -329,10 +314,8 @@ $(document).ready(function (){
       return;
     }
 
-    // Collect form data
     var formData = $(this).serialize();
 
-    // Perform AJAX request to submit the form data
     $.ajax({
       type: "POST",
       url: "https://bs-contact.vercel.app/api/send_email",
