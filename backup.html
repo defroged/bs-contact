@@ -262,47 +262,60 @@ button[type="submit"]:hover {
     <div class="form-group">
       <button type="submit">送信</button>
     </div>
+	<div id="loading-overlay" style="display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000;">
+  <div class="loader" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);"></div>
+</div>
   </form>  
 
 <script>
-$(document).ready(function (){
+$(document).ready(function () {
   function containsURL(value) {
     var urlPattern = /https?:\/\/[^\s]+|www\.[^\s]+/;
     return urlPattern.test(value);
   }
 
-  $("#contact-form").submit(function (e){
+  function showLoadingOverlay(show) {
+    var overlay = $("#loading-overlay");
+    if (show) {
+      overlay.show();
+    } else {
+      overlay.hide();
+    }
+  }
+
+  $("#contact-form").submit(function (e) {
     e.preventDefault();
 
-
-    if($("#honeypot").val() !== "") {
+    if ($("#honeypot").val() !== "") {
       alert("Spam detected!");
       return;
     }
-
 
     var phoneNumber = $("#phone").val();
     var phoneNumberPattern = /^[0-9]+$/;
     if (!phoneNumberPattern.test(phoneNumber)) {
       alert("電話番号は数字のみを含めてください（ハイフンなし）");
       $("#phone").focus();
-      $("#phone")[0].scrollIntoView({behavior: "smooth", block: "center"});
+      $("#phone")[0].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
       return;
     }
 
     var invalidURL = false;
-    $("#contact-form input[type=text], #contact-form textarea").each(function() {
+    $("#contact-form input[type=text], #contact-form textarea").each(function () {
       if (containsURL($(this).val())) {
         invalidURL = true;
         alert("入力項目にURLや「www」を含めないでください。");
         $(this).focus();
-        $(this)[0].scrollIntoView({behavior: "smooth", block: "center"});
-        return false; 
+        $(this)[0].scrollIntoView({ behavior: "smooth", block: "center" });
+        return false;
       }
     });
 
     if (invalidURL) {
-      return; 
+      return;
     }
 
     var yearsSelected = $("#years").val();
@@ -310,25 +323,29 @@ $(document).ready(function (){
     if (yearsSelected === "2～3歳児" && ageInput === "") {
       alert("2～3歳児を選んだ方は年齢・月齢をご記入ください。");
       $("#age").focus();
-      $("#age")[0].scrollIntoView({behavior: "smooth", block: "center"});
+      $("#age")[0].scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
 
     var formData = $(this).serialize();
 
+    showLoadingOverlay(true);
+
     $.ajax({
       type: "POST",
       url: "https://bs-contact.vercel.app/api/send_email",
       data: formData,
-      contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
       processData: true,
       success: function (response) {
+        showLoadingOverlay(false);
         alert("送信されました！\n\n24時間以内にお返事をいたします。\n\n2日経っても返信がない場合は、恐れ入りますがお電話をお願い致します。");
-        window.location.href = "https://www.bluestar-english.com"; 
+        window.location.href = "https://www.bluestar-english.com";
       },
       error: function (errResponse) {
+        showLoadingOverlay(false);
         alert("エラーが発生しました");
-      }
+      },
     });
   });
 });
