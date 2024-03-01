@@ -1,5 +1,5 @@
-// Import necessary libraries
 const { parse } = require('querystring');
+const fetch = require('node-fetch'); // Assuming node-fetch is installed
 
 module.exports = async (req, res) => {
   // Helper functions
@@ -13,7 +13,6 @@ module.exports = async (req, res) => {
     return phoneNumberPattern.test(phoneNumber);
   };
 
-  // Parse request body
   let body = '';
   req.on('data', chunk => {
     body += chunk.toString();
@@ -22,16 +21,48 @@ module.exports = async (req, res) => {
   req.on('end', () => {
     const formData = parse(body);
 
-    // Validation logic
-    // Example: Check for URL in any text input
+    // Check for URLs in any text inputs
     if (Object.values(formData).some(value => containsURL(value))) {
       res.writeHead(400, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify({ error: 'URLs not allowed' }));
     }
 
-    // Add other validations here (phone number, required fields, etc.)
+    // Required fields validation
+    const requiredFields = ['full_name', 'email', 'phone', 'years', 'native', 'find_out'];
+    const missingFields = requiredFields.filter(field => !formData[field]);
+    if (missingFields.length > 0) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Missing required fields', missingFields }));
+    }
 
-    // If all validations pass, forward to email sending endpoint
-    // You can use the `https` module or a library like `axios` to make the request
+    // Phone number validation
+    if (!isValidPhoneNumber(formData.phone)) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Invalid phone number format' }));
+    }
+
+    // Specific logic for "2～3歳児"
+    if (formData.years === "2～3歳児" && !formData.age) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Age required for 2～3歳児' }));
+    }
+
+    // Forward the validated data to your email-sending service
+    fetch('https://bs-contact.vercel.app/api/send_email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      },
+      body: body, // Forward the original body received
+    })
+    .then(response => response.json())
+    .then(data => {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ success: true }));
+    })
+    .catch(error => {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Internal server error' }));
+    });
   });
 };
