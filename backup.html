@@ -231,24 +231,28 @@ button[type="submit"]:hover {
         <div class="form-group">
   <label for="find-out" class="main-label"><span style="color: #B94A48;">＊</span>当教室を知ったきっかけ</label>
   <div class="form-group">
-    <select id="find-out" name="find_out" class="radio-group" required>
-      <option value="" hidden>選択してください</option>
-      <option value="チラシ">チラシ</option>
-      <option value="Instagram">Instagram</option>
-      <option value="SNS広告">SNS広告</option>
-      <option value="検索">検索</option>
-      <option value="教室の前を通りかかって">教室の前を通りかかって</option>
-      <option value="知人の紹介">知人の紹介</option>
-    </select>
-  </div>
+  <div class="radio-group">
+    <input type="radio" id="know-from-flyer" name="find_out" value="チラシ" required>
+    <label for="know-from-flyer">チラシ</label>
+    <input type="radio" id="know-from-instagram" name="find_out" value="Instagram" required>
+    <label for="know-from-instagram">Instagram</label>
+    <input type="radio" id="know-from-sns-ad" name="find_out" value="SNS広告" required>
+    <label for="know-from-sns-ad">SNS広告</label>
+    <input type="radio" id="know-from-search" name="find_out" value="検索" required>
+    <label for="know-from-search">検索</label>
+    <input type="radio" id="know-from-passing-by" name="find_out" value="教室の前を通りかかって" required>
+    <label for="know-from-passing-by">教室の前を通りかかって</label>
+    <input type="radio" id="know-from-acquaintance" name="find_out" value="知人の紹介" required>
+    <label for="know-from-acquaintance">知人の紹介</label>
+</div>
+
+</div>
   <div class="form-group">
     <label for="friend" class="main-label">紹介者のお名前</label>
     <input type="text" id="friend" name="friend">
   </div>
 </div>
-
 	<br>
-
     <div class="form-group">
 	<div class="checkbox-group">
         <input type="checkbox" id="taiken" name="taiken" value="yes">
@@ -279,10 +283,9 @@ button[type="submit"]:hover {
 
 <script>
 $(document).ready(function () {
-  function isRadioGroupChecked(radioGroupName) {
-    return $("input[name='" + radioGroupName + "']:checked").length > 0;
-  }
-
+function isRadioGroupChecked(radioGroupName) {
+  return $("input[name='" + radioGroupName + "']:checked").length > 0;
+}
   function containsURL(value) {
     var urlPattern = /https?:\/\/[^\s]+|www\.[^\s]+/;
     return urlPattern.test(value);
@@ -296,24 +299,29 @@ $(document).ready(function () {
       overlay.hide();
     }
   }
+$("#years").on("change", function() {
+  if ($("#years").val() == "2～3歳児") {
+    $("#age").attr("required", true);
+  } else {
+    $("#age").removeAttr("required");
+  }
+});
+$("#years").trigger("change");
+$("#phone").on("input", function () {
+    var input = $(this).val().replace(/\D/g, ''); // Remove non-digit characters
+    var formatted = input;
 
-  $("#years").on("change", function() {
-    if ($("#years").val() == "2～3歳児") {
-      $("#age").attr("required", true);
-    } else {
-      $("#age").removeAttr("required");
+    if (input.length > 3 && input.length <= 6) {
+      formatted = input.substring(0, 3) + '-' + input.substring(3);
+    } else if (input.length > 6) {
+      formatted = input.substring(0, 3) + '-' + input.substring(3, 7) + '-' + input.substring(7);
     }
-  });
-  $("#years").trigger("change");
 
+    $(this).val(formatted);
+  });
   $("#contact-form").submit(function (e) {
     e.preventDefault();
-
-    if ($("#honeypot").val() !== "") {
-      alert("Spam detected!");
-      return;
-    }
-
+    var honeypotValue = $("#honeypot").val();
     var phoneNumber = $("#phone").val();
     var phoneNumberPattern = /^0\d{2}-\d{4}-\d{4}$/;
     if (!phoneNumberPattern.test(phoneNumber)) {
@@ -341,13 +349,15 @@ $(document).ready(function () {
       return;
     }
 
-    // Add the check for whether the find-out dropdown value has been selected.
-    if ($("#find-out").prop("validity").valueMissing) {
-      e.preventDefault();
-      alert("当教室を知ったきっかけを選択してください");
-      scrollToElement("label[for='find-out']");
-      return;
-    }
+if ($("#find-out").val() === "") {
+  e.preventDefault();
+  alert("当教室を知ったきっかけを選択してください");
+  $("#find-out").focus();
+  $('html, body').animate({
+  scrollTop: $("label[for='find-out']").offset().top - ($(window).height() / 2) + ($("label[for='find-out']").height() / 2)
+}, 500);
+  return;
+}
 
     var yearsSelected = $("#years").val();
     var ageInput = $("#age").val().trim();
@@ -360,29 +370,27 @@ $(document).ready(function () {
 
     alert("送信されました！\n\n24時間以内にお返事をいたします。\n\n2日経っても返信がない場合は、恐れ入りますがお電話をお願い致します。");
 
-    function scrollToElement(element) {
-      $('html, body').animate({
-        scrollTop: $(element).offset().top - ($(window).height() / 2) + ($(element).height() / 2)
-      }, 500);
-    }
-
     var formData = $(this).serialize();
     showLoadingOverlay(true);
 
-    $.ajax({
-      type: "POST",
-      url: "https://bs-contact.vercel.app/api/validate_contact",
-      data: formData,
-      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-      processData: true,
-      success: function (response) {
-        window.location.href = "https://www.bluestar-english.com";
-      },
-      error: function (errResponse) {
-        console.error("Server validation failed", errResponse);
-        showLoadingOverlay(false);
-      },
-    });
+if (honeypotValue == "" || honeypotValue == null) {
+  $.ajax({
+    type: "POST",
+    url: "https://bs-contact.vercel.app/api/validate_contact",
+    data: formData,
+    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+    processData: true,
+    success: function (response) {
+      window.location.href = "https://www.bluestar-english.com";
+    },
+    error: function (errResponse) {
+      console.error("Server validation failed", errResponse);
+      showLoadingOverlay(false);
+    },
+  });
+} else {
+  window.location.href = "https://www.bluestar-english.com";
+}
   });
 });
 </script>
