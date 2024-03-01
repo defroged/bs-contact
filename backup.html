@@ -237,15 +237,15 @@ button[type="submit"]:hover {
   <div class="radio-group">
     <input type="radio" id="know-from-flyer" name="find_out" value="チラシ" required>
     <label for="know-from-flyer">チラシ</label>
-    <input type="radio" id="know-from-instagram" name="find_out" value="Instagram">
+    <input type="radio" id="know-from-instagram" name="find_out" value="Instagram" required>
     <label for="know-from-instagram">Instagram</label>
-    <input type="radio" id="know-from-sns-ad" name="find_out" value="SNS広告">
+    <input type="radio" id="know-from-sns-ad" name="find_out" value="SNS広告" required>
     <label for="know-from-sns-ad">SNS広告</label>
-    <input type="radio" id="know-from-search" name="find_out" value="検索">
+    <input type="radio" id="know-from-search" name="find_out" value="検索" required>
     <label for="know-from-search">検索</label>
-    <input type="radio" id="know-from-passing-by" name="find_out" value="教室の前を通りかかって">
+    <input type="radio" id="know-from-passing-by" name="find_out" value="教室の前を通りかかって" required>
     <label for="know-from-passing-by">教室の前を通りかかって</label>
-    <input type="radio" id="know-from-acquaintance" name="find_out" value="知人の紹介">
+    <input type="radio" id="know-from-acquaintance" name="find_out" value="知人の紹介" required>
     <label for="know-from-acquaintance">知人の紹介</label>
 </div>
 
@@ -307,6 +307,7 @@ $("#years").on("change", function() {
     $("#age").removeAttr("required");
   }
 });
+$("#years").trigger("change");
   $("#contact-form").submit(function (e) {
     e.preventDefault();
 
