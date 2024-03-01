@@ -336,13 +336,15 @@ $(document).ready(function () {
       return;
     }
 // Check required radio group
-if (!$("input[name='find_out']:checked").val()) {
+if (!$("input[name='find_out']:checked").length) {
   alert("「当教室を知ったきっかけ」を選択してください。");
   $("input[name='find_out']").first().focus();
-  $("input[name='find_out']").first()[0].scrollIntoView({
-    behavior: "smooth",
-    block: "center",
-  });
+  setTimeout(() => {
+    $("input[name='find_out']").first()[0].scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, 100);
   return;
 }
     var yearsSelected = $("#years").val();
