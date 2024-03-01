@@ -340,6 +340,14 @@ $("#years").trigger("change");
       return;
     }
 
+if ($("#find-out").val() === "") {
+  e.preventDefault();
+  alert("当教室を知ったきっかけを選択してください");
+  $("#find-out").focus();
+  $("#find-out")[0].scrollIntoView({ behavior: "smooth", block: "center" });
+  return;
+}
+
     var yearsSelected = $("#years").val();
     var ageInput = $("#age").val().trim();
     if (yearsSelected === "2～3歳児" && ageInput === "") {
