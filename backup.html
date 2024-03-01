@@ -362,19 +362,20 @@ if (!$("input[name='find_out']:checked").length) {
     showLoadingOverlay(true);
 
     $.ajax({
-      type: "POST",
-      url: "https://bs-contact.vercel.app/api/validate_contact", 
-      data: formData,
-      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-      processData: true,
-      success: function (response) {
-        window.location.href = "https://www.bluestar-english.com";
-      },
-      error: function (errResponse) {
-        console.error("Server validation failed", errResponse);
-        showLoadingOverlay(false);
-      },
-    });
+  type: "POST",
+  url: "https://bs-contact.vercel.app/api/validate_contact",
+  data: formData,
+  contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+  processData: true,
+  success: function (response) {
+    showLoadingOverlay(false);
+    window.location.href = "https://www.bluestar-english.com";
+  },
+  error: function (errResponse) {
+    console.error("Server validation failed", errResponse);
+    showLoadingOverlay(false);
+  },
+});
   });
 });
 </script>
