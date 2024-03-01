@@ -310,17 +310,16 @@ $(document).ready(function () {
     }
 
     var phoneNumber = $("#phone").val();
-var phoneNumberPattern = /^0\d{2}-\d{4}-\d{4}$/;
-if (!phoneNumberPattern.test(phoneNumber)) {
-  alert("電話番号は「090-1234-5678」の形式で入力してください");
-  $("#phone").focus();
-  $("#phone")[0].scrollIntoView({
-    behavior: "smooth",
-    block: "center",
-  });
-  return;
-}
-
+    var phoneNumberPattern = /^0\d{2}-\d{4}-\d{4}$/;
+    if (!phoneNumberPattern.test(phoneNumber)) {
+      alert("電話番号は「090-1234-5678」の形式で入力してください");
+      $("#phone").focus();
+      $("#phone")[0].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      return;
+    }
 
     var invalidURL = false;
     $("#contact-form input[type=text], #contact-form textarea").each(function () {
@@ -346,32 +345,36 @@ if (!phoneNumberPattern.test(phoneNumber)) {
       return;
     }
 
-    var formData = $(this).serialize();
+    // Show success message immediately after client-side validation
+    alert("送信されました！\n\n24時間以内にお返事をいたします。\n\n2日経っても返信がない場合は、恐れ入りますがお電話をお願い致します。");
 
+    // Now submit the form data to the serverless function for additional validation
+    var formData = $(this).serialize();
     showLoadingOverlay(true);
 
     $.ajax({
-  type: "POST",
-  url: "https://bs-contact.vercel.app/api/validate_contact",
-  data: formData,
-  contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-  processData: true,
-  success: function (response) {
-    showLoadingOverlay(false);
-    // Keep the original success alert
-    alert("送信されました！\n\n24時間以内にお返事をいたします。\n\n2日経っても返信がない場合は、恐れ入りますがお電話をお願い致します。");
-    window.location.href = "https://www.bluestar-english.com";
-  },
-  error: function (errResponse) {
-    showLoadingOverlay(false);
-    // Keep the original error alert
-    alert("エラーが発生しました");
-  },
-});
-
+      type: "POST",
+      url: "https://bs-contact.vercel.app/api/validate_contact", 
+      data: formData,
+      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+      processData: true,
+      success: function (response) {
+        // Since the success message is already shown, you might want to redirect the user
+        // or perform some other action here.
+        window.location.href = "https://www.bluestar-english.com";
+      },
+      error: function (errResponse) {
+        // Handle server-side validation errors or issues here
+        // Since the client-side success message is already shown, consider logging this error,
+        // or you might want to notify the user discreetly without confusing them.
+        console.error("Server validation failed", errResponse);
+        showLoadingOverlay(false);
+      },
+    });
   });
 });
 </script>
+
 
 </body>
 </html>
