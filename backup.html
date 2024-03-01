@@ -16,6 +16,10 @@ body {
 	font-weight: bold;
 }
 
+label[for="honeypot"], #honeypot {
+  display: none;
+  visibility: hidden;
+}
 
 #contact-form {
   max-width: 800px;
@@ -71,8 +75,6 @@ select {
 .radio-group input[type="radio"],
 .checkbox-group input[type="checkbox"] {
   position: absolute;
-  /*! left: 0; */
-  /*! top: 50%; */
   transform: translateY(-50%);
   margin-top: 12px;
 }
@@ -103,7 +105,6 @@ button[type="submit"]:hover {
 
   .form-group,
   .checkbox-group,
-  .recaptcha,
   button[type="submit"] {
     width: calc(100% - 20px);
   }
@@ -126,10 +127,6 @@ button[type="submit"]:hover {
 .checkbox-group {
   display: flex;
   flex-direction: column;
-}
-
-.checkbox-group input[type="checkbox"] {
-  /*! margin-bottom: 10px; */
 }
 
 .checkbox-group label {
@@ -267,9 +264,8 @@ button[type="submit"]:hover {
     </div>
     </div>
 
-<div style="display:none">
-  <input type="text" id="honeypot" name="honeypot" value="">
-</div>
+<label for="honeypot">Email</label>
+<input id="honeypot" name="honeypot" size="40" type="text" /><br>
 
     <div class="form-group">
       <button type="submit">送信</button>
@@ -307,11 +303,6 @@ $("#years").on("change", function() {
 $("#years").trigger("change");
   $("#contact-form").submit(function (e) {
     e.preventDefault();
-
-    if ($("#honeypot").val() !== "") {
-      alert("Spam detected!");
-      return;
-    }
 
     var phoneNumber = $("#phone").val();
     var phoneNumberPattern = /^0\d{2}-\d{4}-\d{4}$/;
@@ -362,21 +353,26 @@ if ($("#find-out").val() === "") {
     var formData = $(this).serialize();
     showLoadingOverlay(true);
 
-    $.ajax({
-      type: "POST",
-      url: "https://bs-contact.vercel.app/api/validate_contact", 
-      data: formData,
-      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-      processData: true,
-      success: function (response) {
-
-        window.location.href = "https://www.bluestar-english.com";
-      },
-      error: function (errResponse) {
-        console.error("Server validation failed", errResponse);
-        showLoadingOverlay(false);
-      },
-    });
+if (honeypotValue == "" || honeypotValue == null) {
+  // If it's a human, send the form data to the serverless function validation
+  $.ajax({
+    type: "POST",
+    url: "https://bs-contact.vercel.app/api/validate_contact",
+    data: formData,
+    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+    processData: true,
+    success: function (response) {
+      window.location.href = "https://www.bluestar-english.com";
+    },
+    error: function (errResponse) {
+      console.error("Server validation failed", errResponse);
+      showLoadingOverlay(false);
+    },
+  });
+} else {
+  // If it's a bot, just redirect to bluestar-english.com without submitting the form
+  window.location.href = "https://www.bluestar-english.com";
+}
   });
 });
 </script>
