@@ -307,6 +307,18 @@ $("#years").on("change", function() {
   }
 });
 $("#years").trigger("change");
+$("#phone").on("input", function () {
+    var input = $(this).val().replace(/\D/g, ''); // Remove non-digit characters
+    var formatted = input;
+
+    if (input.length > 3 && input.length <= 6) {
+      formatted = input.substring(0, 3) + '-' + input.substring(3);
+    } else if (input.length > 6) {
+      formatted = input.substring(0, 3) + '-' + input.substring(3, 7) + '-' + input.substring(7);
+    }
+
+    $(this).val(formatted);
+  });
   $("#contact-form").submit(function (e) {
     e.preventDefault();
     var honeypotValue = $("#honeypot").val();
@@ -362,7 +374,6 @@ if ($("#find-out").val() === "") {
     showLoadingOverlay(true);
 
 if (honeypotValue == "" || honeypotValue == null) {
-  // If it's a human, send the form data to the serverless function validation
   $.ajax({
     type: "POST",
     url: "https://bs-contact.vercel.app/api/validate_contact",
@@ -378,7 +389,6 @@ if (honeypotValue == "" || honeypotValue == null) {
     },
   });
 } else {
-  // If it's a bot, just redirect to bluestar-english.com without submitting the form
   window.location.href = "https://www.bluestar-english.com";
 }
   });
