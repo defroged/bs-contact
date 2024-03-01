@@ -179,7 +179,7 @@ button[type="submit"]:hover {
     </div>
 	<div class="form-group">
 	<label for="phone" class="main-label"><span style="color: #B94A48;">＊</span>携帯電話(ハイフンあり)</label>
-      <input type="phone" id="phone" name="phone" required>
+      <input type="phone" id="phone" name="phone" pattern="^0\d{2}-\d{4}-\d{4}$" title="電話番号は「090-1234-5678」の形式で入力してください" required>
     </div>
     <div class="form-group">
       <label for="years" class="main-label" class="main-label"><span style="color: #B94A48;">＊</span>学年</label>
@@ -287,7 +287,6 @@ button[type="submit"]:hover {
 
 <script>
 $(document).ready(function () {
-
   function containsURL(value) {
     var urlPattern = /https?:\/\/[^\s]+|www\.[^\s]+/;
     return urlPattern.test(value);
@@ -301,50 +300,15 @@ $(document).ready(function () {
       overlay.hide();
     }
   }
-
-  function scrollToElement(element, offsetX, offsetY) {
-    if (!element) return;
-    var offset = element.getBoundingClientRect();
-    window.scrollBy({
-      top: offset.top - (offsetY || 0),
-      left: offset.left - (offsetX || 0),
-      behavior: 'smooth'
-    });
+$("#years").on("change", function() {
+  if ($("#years").val() == "2～3歳児") {
+    $("#age").attr("required", true);
+  } else {
+    $("#age").removeAttr("required");
   }
-
-  function validateRequiredFields() {
-    var isValid = true;
-    
-    $("#contact-form [required], #contact-form [data-required]").each(function () {
-      if ($(this).is(':radio')) {
-        var name = $(this).attr("name");
-        if (!$("input[name='" + name + "']:checked").length) {
-          isValid = false;
-          alert("当教室を知ったきっかけは必須です");
-          $(this).focus();
-          scrollToElement($("#know-from-flyer")[0], 0, 100);
-          return false;
-        }
-      } else {
-        if ($(this).val().trim() === "") {
-          isValid = false;
-          alert("当教室を知ったきっかけは必須です");
-          $(this).focus();
-          scrollToElement($(this)[0], 0, 100);
-          return false;
-        }
-      }
-    });
-    
-    return isValid;
-  }
-
+});
   $("#contact-form").submit(function (e) {
     e.preventDefault();
-
-    if (!validateRequiredFields()) {
-      return;
-    }
 
     if ($("#honeypot").val() !== "") {
       alert("Spam detected!");
@@ -356,7 +320,10 @@ $(document).ready(function () {
     if (!phoneNumberPattern.test(phoneNumber)) {
       alert("電話番号は「090-1234-5678」の形式で入力してください");
       $("#phone").focus();
-      scrollToElement($("#phone")[0], 0, 100);
+      $("#phone")[0].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
       return;
     }
 
@@ -366,7 +333,7 @@ $(document).ready(function () {
         invalidURL = true;
         alert("入力項目にURLや「www」を含めないでください。");
         $(this).focus();
-        scrollToElement($(this)[0], 0, 100);
+        $(this)[0].scrollIntoView({ behavior: "smooth", block: "center" });
         return false;
       }
     });
@@ -380,7 +347,7 @@ $(document).ready(function () {
     if (yearsSelected === "2～3歳児" && ageInput === "") {
       alert("2～3歳児を選んだ方は年齢・月齢をご記入ください。");
       $("#age").focus();
-      scrollToElement($("#age")[0], 0, 100);
+      $("#age")[0].scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
 
@@ -396,6 +363,7 @@ $(document).ready(function () {
       contentType: "application/x-www-form-urlencoded; charset=UTF-8",
       processData: true,
       success: function (response) {
+
         window.location.href = "https://www.bluestar-english.com";
       },
       error: function (errResponse) {
@@ -404,7 +372,6 @@ $(document).ready(function () {
       },
     });
   });
-
 });
 </script>
 
