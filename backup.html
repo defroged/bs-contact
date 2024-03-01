@@ -229,6 +229,7 @@ button[type="submit"]:hover {
 	<br>
 
         <div class="form-group">
+		<a id="find-out-anchor"></a>
   <label for="find-out" class="main-label"><span style="color: #B94A48;">＊</span>当教室を知ったきっかけ</label>
   <div class="form-group">
   <div class="radio-group">
@@ -353,9 +354,7 @@ if ($("#find-out").val() === "") {
   e.preventDefault();
   alert("当教室を知ったきっかけを選択してください");
   $("#find-out").focus();
-  $('html, body').animate({
-  scrollTop: $("label[for='find-out']").offset().top - ($(window).height() / 2) + ($("label[for='find-out']").height() / 2)
-}, 500);
+    window.location.href = "#find-out-anchor";
   return;
 }
 
