@@ -287,6 +287,9 @@ button[type="submit"]:hover {
 
 <script>
 $(document).ready(function () {
+function isRadioGroupChecked(radioGroupName) {
+  return $("input[name='" + radioGroupName + "']:checked").length > 0;
+}
   function containsURL(value) {
     var urlPattern = /https?:\/\/[^\s]+|www\.[^\s]+/;
     return urlPattern.test(value);
@@ -342,7 +345,13 @@ $("#years").trigger("change");
     if (invalidURL) {
       return;
     }
-
+if (!isRadioGroupChecked("find_out")) {
+  e.preventDefault();
+  alert("当教室を知ったきっかけを選択してください");
+  $("#know-from-flyer").focus();
+  $("#know-from-flyer")[0].scrollIntoView({ behavior: "smooth", block: "center" });
+  return;
+}
     var yearsSelected = $("#years").val();
     var ageInput = $("#age").val().trim();
     if (yearsSelected === "2～3歳児" && ageInput === "") {
