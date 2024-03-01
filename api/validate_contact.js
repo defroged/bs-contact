@@ -1,5 +1,5 @@
 const { parse } = require('querystring');
-const fetch = require('node-fetch');
+const axios = require('axios'); 
 const cors = require('micro-cors')();
 
 const validateContact = async (req, res) => {
@@ -49,13 +49,11 @@ const validateContact = async (req, res) => {
       return res.end(JSON.stringify({ error: 'Age required for 2～3歳児' }));
     }
 
-    fetch('https://bs-contact.vercel.app/api/send_email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      },
-      body: body,
-    })
+    axios.post('https://bs-contact.vercel.app/api/send_email', body, {
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+  },
+})
     .then(response => response.json())
     .then(data => {
       res.writeHead(200, { 'Content-Type': 'application/json' });
