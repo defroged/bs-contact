@@ -232,28 +232,22 @@ button[type="submit"]:hover {
 	<br>
 
         <div class="form-group">
-      <label for="find-out" class="main-label"><span style="color: #B94A48;">＊</span>当教室を知ったきっかけ</label>
-<div class="form-group">
-  <div class="radio-group">
-    <input type="radio" id="know-from-flyer" name="find_out" value="チラシ" required>
-    <label for="know-from-flyer">チラシ</label>
-    <input type="radio" id="know-from-instagram" name="find_out" value="Instagram" required>
-    <label for="know-from-instagram">Instagram</label>
-    <input type="radio" id="know-from-sns-ad" name="find_out" value="SNS広告" required>
-    <label for="know-from-sns-ad">SNS広告</label>
-    <input type="radio" id="know-from-search" name="find_out" value="検索" required>
-    <label for="know-from-search">検索</label>
-    <input type="radio" id="know-from-passing-by" name="find_out" value="教室の前を通りかかって" required>
-    <label for="know-from-passing-by">教室の前を通りかかって</label>
-    <input type="radio" id="know-from-acquaintance" name="find_out" value="知人の紹介" required>
-    <label for="know-from-acquaintance">知人の紹介</label>
-</div>
-
-</div>
-<div class="form-group">
-	<label for="friend" class="main-label">紹介者のお名前</label>
-      <input type="text" id="friend" name="friend">
-    </div>
+  <label for="find-out" class="main-label"><span style="color: #B94A48;">＊</span>当教室を知ったきっかけ</label>
+  <div class="form-group">
+    <select id="find-out" name="find_out" class="radio-group" required>
+      <option value="" hidden>選択してください</option>
+      <option value="チラシ">チラシ</option>
+      <option value="Instagram">Instagram</option>
+      <option value="SNS広告">SNS広告</option>
+      <option value="検索">検索</option>
+      <option value="教室の前を通りかかって">教室の前を通りかかって</option>
+      <option value="知人の紹介">知人の紹介</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="friend" class="main-label">紹介者のお名前</label>
+    <input type="text" id="friend" name="friend">
+  </div>
 </div>
 	<br>
     <div class="form-group">
@@ -345,13 +339,7 @@ $("#years").trigger("change");
     if (invalidURL) {
       return;
     }
-if (!isRadioGroupChecked("find_out")) {
-  e.preventDefault();
-  alert("当教室を知ったきっかけを選択してください");
-  $("#know-from-flyer").click();  // Change this line
-  $("#know-from-flyer")[0].scrollIntoView({ behavior: "smooth", block: "center" });
-  return;
-}
+
     var yearsSelected = $("#years").val();
     var ageInput = $("#age").val().trim();
     if (yearsSelected === "2～3歳児" && ageInput === "") {
