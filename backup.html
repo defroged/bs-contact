@@ -301,8 +301,35 @@ $(document).ready(function () {
     }
   }
 
+  function validateRequiredFields() {
+    var isValid = true;
+    $("#contact-form [required], #contact-form [data-required]").each(function () {
+      if ($(this).is(':radio')) {
+        var name = $(this).attr("name");
+        if (!$("input[name='" + name + "']:checked").length) {
+          isValid = false;
+          alert("当教室を知ったきっかけは必須です");
+          $(this).focus();
+          $(this)[0].scrollIntoView({ behavior: "smooth", block: "center" });
+          return false;
+        }
+      } else if ($(this).val().trim() === "") {
+        isValid = false;
+        alert("当教室を知ったきっかけは必須です");
+        $(this).focus();
+        $(this)[0].scrollIntoView({ behavior: "smooth", block: "center" });
+        return false;
+      }
+    });
+    return isValid;
+  }
+
   $("#contact-form").submit(function (e) {
     e.preventDefault();
+
+    if (!validateRequiredFields()) {
+      return;
+    }
 
     if ($("#honeypot").val() !== "") {
       alert("Spam detected!");
@@ -345,10 +372,8 @@ $(document).ready(function () {
       return;
     }
 
-    // Show success message immediately after client-side validation
     alert("送信されました！\n\n24時間以内にお返事をいたします。\n\n2日経っても返信がない場合は、恐れ入りますがお電話をお願い致します。");
 
-    // Now submit the form data to the serverless function for additional validation
     var formData = $(this).serialize();
     showLoadingOverlay(true);
 
@@ -359,14 +384,9 @@ $(document).ready(function () {
       contentType: "application/x-www-form-urlencoded; charset=UTF-8",
       processData: true,
       success: function (response) {
-        // Since the success message is already shown, you might want to redirect the user
-        // or perform some other action here.
         window.location.href = "https://www.bluestar-english.com";
       },
       error: function (errResponse) {
-        // Handle server-side validation errors or issues here
-        // Since the client-side success message is already shown, consider logging this error,
-        // or you might want to notify the user discreetly without confusing them.
         console.error("Server validation failed", errResponse);
         showLoadingOverlay(false);
       },
