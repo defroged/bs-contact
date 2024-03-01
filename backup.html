@@ -303,7 +303,7 @@ $("#years").on("change", function() {
 $("#years").trigger("change");
   $("#contact-form").submit(function (e) {
     e.preventDefault();
-
+    var honeypotValue = $("#honeypot").val();
     var phoneNumber = $("#phone").val();
     var phoneNumberPattern = /^0\d{2}-\d{4}-\d{4}$/;
     if (!phoneNumberPattern.test(phoneNumber)) {
