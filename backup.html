@@ -335,7 +335,16 @@ $(document).ready(function () {
     if (invalidURL) {
       return;
     }
-
+// Check required radio group
+if (!$("input[name='find_out']:checked").val()) {
+  alert("「当教室を知ったきっかけ」を選択してください。");
+  $("input[name='find_out']").first().focus();
+  $("input[name='find_out']").first()[0].scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
+  return;
+}
     var yearsSelected = $("#years").val();
     var ageInput = $("#age").val().trim();
     if (yearsSelected === "2～3歳児" && ageInput === "") {
@@ -345,10 +354,8 @@ $(document).ready(function () {
       return;
     }
 
-    // Show success message immediately after client-side validation
     alert("送信されました！\n\n24時間以内にお返事をいたします。\n\n2日経っても返信がない場合は、恐れ入りますがお電話をお願い致します。");
 
-    // Now submit the form data to the serverless function for additional validation
     var formData = $(this).serialize();
     showLoadingOverlay(true);
 
@@ -359,14 +366,9 @@ $(document).ready(function () {
       contentType: "application/x-www-form-urlencoded; charset=UTF-8",
       processData: true,
       success: function (response) {
-        // Since the success message is already shown, you might want to redirect the user
-        // or perform some other action here.
         window.location.href = "https://www.bluestar-english.com";
       },
       error: function (errResponse) {
-        // Handle server-side validation errors or issues here
-        // Since the client-side success message is already shown, consider logging this error,
-        // or you might want to notify the user discreetly without confusing them.
         console.error("Server validation failed", errResponse);
         showLoadingOverlay(false);
       },
