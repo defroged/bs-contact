@@ -302,27 +302,38 @@ $(document).ready(function () {
   }
 
   function validateRequiredFields() {
-    var isValid = true;
-    $("#contact-form [required], #contact-form [data-required]").each(function () {
-      if ($(this).is(':radio')) {
-        var name = $(this).attr("name");
-        if (!$("input[name='" + name + "']:checked").length) {
-          isValid = false;
-          alert("当教室を知ったきっかけは必須です");
-          $(this).focus();
-          $(this)[0].scrollIntoView({ behavior: "smooth", block: "center" });
-          return false;
-        }
-      } else if ($(this).val().trim() === "") {
+  var isValid = true;
+  
+  $("#contact-form [required], #contact-form [data-required]").each(function () {
+    if ($(this).is(':radio')) {
+      var name = $(this).attr("name");
+      if (!$("input[name='" + name + "']:checked").length) {
         isValid = false;
         alert("当教室を知ったきっかけは必須です");
         $(this).focus();
-        $(this)[0].scrollIntoView({ behavior: "smooth", block: "center" });
+        $('html, body').animate({
+          scrollTop: $("#know-from-flyer").offset().top - 100
+        }, {
+          duration: 500,
+          easing: "swing"
+        });
         return false;
       }
-    });
-    return isValid;
-  }
+    } else if ($(this).val().trim() === "") {
+      isValid = false;
+      alert("当教室を知ったきっかけは必須です");
+      $(this).focus();
+      $('html, body').animate({
+        scrollTop: $(this).offset().top - 100
+      }, {
+        duration: 500,
+        easing: "swing"
+      });
+      return false;
+    }
+  });
+  return isValid;
+}
 
   $("#contact-form").submit(function (e) {
     e.preventDefault();
