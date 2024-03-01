@@ -1,5 +1,17 @@
 const { parse } = require('querystring');
-const fetch = require('node-fetch'); // Assuming node-fetch is installed
+const fetch = require('node-fetch');
+
+module.exports = async (req, res) => {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*'); // This allows any domain to access your serverless function
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle preflight request
+  if (req.method === 'OPTIONS') {
+    return res.status(200).send('OK'); // Respond OK to preflight requests
+  }
+
 
 module.exports = async (req, res) => {
   // Helper functions
