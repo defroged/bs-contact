@@ -335,7 +335,9 @@ if ($("#find-out").val() === "") {
   e.preventDefault();
   alert("当教室を知ったきっかけを選択してください");
   $("#find-out").focus();
-  $("label[for='find-out']")[0].scrollIntoView({ behavior: "smooth", block: "center" });
+  $('html, body').animate({
+  scrollTop: $("label[for='find-out']").offset().top - ($(window).height() / 2) + ($("label[for='find-out']").height() / 2)
+}, 500);
   return;
 }
 
