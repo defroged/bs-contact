@@ -1,19 +1,13 @@
 const { parse } = require('querystring');
 const fetch = require('node-fetch');
+const cors = require('micro-cors')();
 
-module.exports = async (req, res) => {
+const validateContact = async (req, res) => {
   if (req.method === 'OPTIONS') {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.status(200).send('OK');
-  return;
-} else {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-}
+    res.status(200).send('OK');
+    return;
+  }
 
-
-module.exports = async (req, res) => {
   // Helper functions
   const containsURL = (value) => {
     const urlPattern = /https?:\/\/[^\s]+|www\.[^\s]+/;
@@ -60,7 +54,7 @@ module.exports = async (req, res) => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       },
-      body: body, 
+      body: body,
     })
     .then(response => response.json())
     .then(data => {
@@ -73,3 +67,5 @@ module.exports = async (req, res) => {
     });
   });
 };
+
+module.exports = cors(validateContact);
