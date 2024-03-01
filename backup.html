@@ -287,6 +287,7 @@ button[type="submit"]:hover {
 
 <script>
 $(document).ready(function () {
+
   function containsURL(value) {
     var urlPattern = /https?:\/\/[^\s]+|www\.[^\s]+/;
     return urlPattern.test(value);
@@ -301,39 +302,42 @@ $(document).ready(function () {
     }
   }
 
+  function scrollToElement(element, offsetX, offsetY) {
+    if (!element) return;
+    var offset = element.getBoundingClientRect();
+    window.scrollBy({
+      top: offset.top - (offsetY || 0),
+      left: offset.left - (offsetX || 0),
+      behavior: 'smooth'
+    });
+  }
+
   function validateRequiredFields() {
-  var isValid = true;
-  
-  $("#contact-form [required], #contact-form [data-required]").each(function () {
-    if ($(this).is(':radio')) {
-      var name = $(this).attr("name");
-      if (!$("input[name='" + name + "']:checked").length) {
-        isValid = false;
-        alert("当教室を知ったきっかけは必須です");
-        $(this).focus();
-        $('html, body').animate({
-          scrollTop: $("#know-from-flyer").offset().top - 100
-        }, {
-          duration: 500,
-          easing: "swing"
-        });
-        return false;
+    var isValid = true;
+    
+    $("#contact-form [required], #contact-form [data-required]").each(function () {
+      if ($(this).is(':radio')) {
+        var name = $(this).attr("name");
+        if (!$("input[name='" + name + "']:checked").length) {
+          isValid = false;
+          alert("当教室を知ったきっかけは必須です");
+          $(this).focus();
+          scrollToElement($("#know-from-flyer")[0], 0, 100);
+          return false;
+        }
+      } else {
+        if ($(this).val().trim() === "") {
+          isValid = false;
+          alert("当教室を知ったきっかけは必須です");
+          $(this).focus();
+          scrollToElement($(this)[0], 0, 100);
+          return false;
+        }
       }
-    } else if ($(this).val().trim() === "") {
-      isValid = false;
-      alert("当教室を知ったきっかけは必須です");
-      $(this).focus();
-      $('html, body').animate({
-        scrollTop: $(this).offset().top - 100
-      }, {
-        duration: 500,
-        easing: "swing"
-      });
-      return false;
-    }
-  });
-  return isValid;
-}
+    });
+    
+    return isValid;
+  }
 
   $("#contact-form").submit(function (e) {
     e.preventDefault();
@@ -352,10 +356,7 @@ $(document).ready(function () {
     if (!phoneNumberPattern.test(phoneNumber)) {
       alert("電話番号は「090-1234-5678」の形式で入力してください");
       $("#phone").focus();
-      $("#phone")[0].scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+      scrollToElement($("#phone")[0], 0, 100);
       return;
     }
 
@@ -365,7 +366,7 @@ $(document).ready(function () {
         invalidURL = true;
         alert("入力項目にURLや「www」を含めないでください。");
         $(this).focus();
-        $(this)[0].scrollIntoView({ behavior: "smooth", block: "center" });
+        scrollToElement($(this)[0], 0, 100);
         return false;
       }
     });
@@ -379,7 +380,7 @@ $(document).ready(function () {
     if (yearsSelected === "2～3歳児" && ageInput === "") {
       alert("2～3歳児を選んだ方は年齢・月齢をご記入ください。");
       $("#age").focus();
-      $("#age")[0].scrollIntoView({ behavior: "smooth", block: "center" });
+      scrollToElement($("#age")[0], 0, 100);
       return;
     }
 
@@ -403,6 +404,7 @@ $(document).ready(function () {
       },
     });
   });
+
 });
 </script>
 
