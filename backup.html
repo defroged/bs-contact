@@ -231,22 +231,16 @@ button[type="submit"]:hover {
         <div class="form-group">
   <label for="find-out" class="main-label"><span style="color: #B94A48;">＊</span>当教室を知ったきっかけ</label>
   <div class="form-group">
-  <div class="radio-group">
-    <input type="radio" id="know-from-flyer" name="find_out" value="チラシ" required>
-    <label for="know-from-flyer">チラシ</label>
-    <input type="radio" id="know-from-instagram" name="find_out" value="Instagram" required>
-    <label for="know-from-instagram">Instagram</label>
-    <input type="radio" id="know-from-sns-ad" name="find_out" value="SNS広告" required>
-    <label for="know-from-sns-ad">SNS広告</label>
-    <input type="radio" id="know-from-search" name="find_out" value="検索" required>
-    <label for="know-from-search">検索</label>
-    <input type="radio" id="know-from-passing-by" name="find_out" value="教室の前を通りかかって" required>
-    <label for="know-from-passing-by">教室の前を通りかかって</label>
-    <input type="radio" id="know-from-acquaintance" name="find_out" value="知人の紹介" required>
-    <label for="know-from-acquaintance">知人の紹介</label>
+  <select name="find_out" required>
+    <option value="チラシ">チラシ</option>
+    <option value="Instagram">Instagram</option>
+    <option value="SNS広告">SNS広告</option>
+    <option value="検索">検索</option>
+    <option value="教室の前を通りかかって">教室の前を通りかかって</option>
+    <option value="知人の紹介">知人の紹介</option>
+  </select>
 </div>
 
-</div>
   <div class="form-group">
     <label for="friend" class="main-label">紹介者のお名前</label>
     <input type="text" id="friend" name="friend">
