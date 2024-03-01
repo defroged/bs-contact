@@ -348,7 +348,7 @@ $("#years").trigger("change");
 if (!isRadioGroupChecked("find_out")) {
   e.preventDefault();
   alert("当教室を知ったきっかけを選択してください");
-  $("#know-from-flyer").focus();
+  $("#know-from-flyer").click();  // Change this line
   $("#know-from-flyer")[0].scrollIntoView({ behavior: "smooth", block: "center" });
   return;
 }
