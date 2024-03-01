@@ -99,7 +99,7 @@ button[type="submit"]:hover {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   #contact-form {
-    width: 90%;
+    width: 100%;
     margin-top: 20px;
   }
 
@@ -231,7 +231,7 @@ button[type="submit"]:hover {
         <div class="form-group">
   <label for="find-out" class="main-label"><span style="color: #B94A48;">＊</span>当教室を知ったきっかけ</label>
 <div class="form-group">
-  <select name="find_out" required oninvalid="this.setCustomValidity('Please select an option');" onchange="this.setCustomValidity('');">
+  <select name="find_out" required oninvalid="this.setCustomValidity('必須項目です');" onchange="this.setCustomValidity('');">
     <option value="" disabled selected>選択してください</option>
     <option value="チラシ">チラシ</option>
     <option value="Instagram">Instagram</option>
