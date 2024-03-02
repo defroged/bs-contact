@@ -16,6 +16,18 @@ body {
 	font-weight: bold;
 }
 
+ .form-group-hidden {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+  }
+
+  .form-group-visible {
+    max-height: 100px; /* Adjust based on your needs */
+    transition: max-height 0.5s ease-in;
+  }
+  
+  
 label[for="honeypot"], #honeypot {
   display: none;
   visibility: hidden;
@@ -232,7 +244,7 @@ button[type="submit"]:hover {
         <div class="form-group">
   <label for="find-out" class="main-label"><span style="color: #B94A48;">＊</span>当教室を知ったきっかけ</label>
 <div class="form-group">
-  <select name="find_out" required oninvalid="this.setCustomValidity('必須項目です');" onchange="this.setCustomValidity('');">
+    <select name="find_out" required oninvalid="this.setCustomValidity('必須項目です');">
     <option value="" disabled selected>選択してください</option>
     <option value="チラシ">チラシ</option>
     <option value="Instagram">Instagram</option>
@@ -244,7 +256,7 @@ button[type="submit"]:hover {
 </div>
 
 
-  <div class="form-group">
+  <div class="form-group form-group-hidden" id="friendInputGroup">
     <label for="friend" class="main-label">紹介者のお名前</label>
     <input type="text" id="friend" name="friend">
   </div>
@@ -295,6 +307,25 @@ function isRadioGroupChecked(radioGroupName) {
       overlay.hide();
     }
   }
+  
+  // Add the showInputBasedOnSelection function here
+  function showInputBasedOnSelection(value) {
+    var inputGroup = document.getElementById('friendInputGroup');
+    if (value === '知人の紹介') {
+      inputGroup.classList.remove('form-group-hidden');
+      inputGroup.classList.add('form-group-visible');
+    } else {
+      inputGroup.classList.remove('form-group-visible');
+      inputGroup.classList.add('form-group-hidden');
+    }
+  }
+
+  // Additional code to trigger the function when the relevant select option changes
+  $('select[name="find_out"]').on('change', function() {
+    showInputBasedOnSelection(this.value);
+    this.setCustomValidity(''); // Preserve the existing functionality
+  });
+  
 $("#years").on("change", function() {
   if ($("#years").val() == "2～3歳児") {
     $("#age").attr("required", true);
