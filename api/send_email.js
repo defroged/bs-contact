@@ -93,6 +93,11 @@ const emailBody = `
     <span class="label">Special Coupon:</span>
     <span class="value">${special_coupon === 'yes' ? '持っている' : '持っていない'}</span>
   </div>
+  <br>
+  <div class="content">
+    <span class="label">体験を申し込む:</span>
+    <span class="value">${taiken === 'yes' ? 'はい' : 'いいえ'}</span>
+  </div>
   <div class="content">
     <span class="header">お問い合わせ内容</span>
     <p>${inquiry}</p>

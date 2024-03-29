@@ -10,7 +10,6 @@ const validateContact = async (req, res) => {
       return;
     }
 
-    // Helper functions
     const containsURL = (value) => {
       const urlPattern = /https?:\/\/[^\s]+|www\.[^\s]+/;
       return urlPattern.test(value);
