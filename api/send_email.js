@@ -112,15 +112,15 @@ async function handleFormSubmission(body) {
     secure: false, // Set to false for STARTTLS
     requireTLS: true, // Ensure TLS is used
     auth: {
-      user: 'hello@ronward.sakura.ne.jp',
-      pass: 'SaoRon0207!',
+      user: 'hello@bluestar-english.com',
+      pass: 'MyLight*1980!!',
     },
     logger: true, // Enable detailed logging
     debug: true   // Show debug output
   });
 
   const mailOptions = {
-    from: 'hello@ronward.sakura.ne.jp',
+    from: process.env.EMAIL_USER, // Use the same email as the authenticated user
     to: emailTo,
     subject: emailSubject,
     html: emailBody,
