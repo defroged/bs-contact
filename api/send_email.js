@@ -119,7 +119,7 @@ async function handleFormSubmission(body) {
   });
 
   const mailOptions = {
-    from: `hello@ronward.sakura.ne.jp`, // Use the initial domain
+    from: `hello@bluestar-english.com`, 
     to: emailTo,
     subject: emailSubject,
     html: emailBody,
