@@ -107,14 +107,14 @@ const emailBody = `
 `;
 
 const transporter = nodemailer.createTransport({
-  host: 'ronward.sakura.ne.jp',
-  port: 465,
-  secure: true, 
+  host: 'ronward.sakura.ne.jp', 
+  port: 587, 
+  secure: false, 
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-});
+});;
 
   const mailOptions = {
     from: 'hello@bluestar-english.com',
