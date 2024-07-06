@@ -28,7 +28,7 @@ async function handleFormSubmission(body) {
   const special_coupon = body.special_coupon ? sanitizeInput(body.special_coupon) : "no"; // Default to "no" if not provided
   const inquiry = sanitizeInput(body.inquiry);
 
-const emailBody = `
+  const emailBody = `
 <html>
 <head>
   <style>
@@ -106,15 +106,15 @@ const emailBody = `
 </html>
 `;
 
-const transporter = nodemailer.createTransport({
-  host: 'ronward.sakura.ne.jp', 
-  port: 587, 
-  secure: false, 
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+  const transporter = nodemailer.createTransport({
+    host: 'ronward.sakura.ne.jp', // Replace with your specific initial domain provided by Sakura
+    port: 587, // Use port 587 for SMTP
+    secure: false, // Set to false as per the Sakura server info
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
   const mailOptions = {
     from: 'hello@bluestar-english.com',
@@ -124,7 +124,13 @@ const transporter = nodemailer.createTransport({
     replyTo: body.email
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error.message);
+    throw new Error('Email sending failed');
+  }
 }
 
 module.exports = async (req, res) => {
@@ -151,7 +157,7 @@ module.exports = async (req, res) => {
       await handleFormSubmission(body);
       res.status(200).json({ message: 'Email sent successfully' });
     } catch (e) {
-      console.error('Error processing form submission:', e);
+      console.error('Error processing form submission:', e.message);
       res.status(500).json({ error: 'Error processing form submission' });
     }
   });
