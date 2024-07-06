@@ -107,7 +107,7 @@ const emailBody = `
 `;
 
 const transporter = nodemailer.createTransport({
-  host: 'mail.bluestar-english.com',
+  host: 'ronward.sakura.ne.jp',
   port: 465,
   secure: true, 
   auth: {
