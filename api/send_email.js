@@ -119,7 +119,7 @@ async function handleFormSubmission(body) {
   });
 
   const mailOptions = {
-    from: process.env.EMAIL_USER, // Use the same email as the authenticated user
+    from: `hello@ronward.sakura.ne.jp`, // Use the initial domain
     to: emailTo,
     subject: emailSubject,
     html: emailBody,
