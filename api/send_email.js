@@ -114,6 +114,8 @@ async function handleFormSubmission(body) {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
+    logger: true, // Enable detailed logging
+    debug: true   // Show debug output
   });
 
   const mailOptions = {
@@ -125,10 +127,11 @@ async function handleFormSubmission(body) {
   };
 
   try {
+    console.log('Sending email with the following options:', mailOptions);
     await transporter.sendMail(mailOptions);
     console.log('Email sent successfully');
   } catch (error) {
-    console.error('Error sending email:', error.message);
+    console.error('Error sending email:', error);
     throw new Error('Email sending failed');
   }
 }
@@ -154,10 +157,11 @@ module.exports = async (req, res) => {
   req.on('end', async () => {
     try {
       body = querystring.parse(body);
+      console.log('Received form submission with the following data:', body);
       await handleFormSubmission(body);
       res.status(200).json({ message: 'Email sent successfully' });
     } catch (e) {
-      console.error('Error processing form submission:', e.message);
+      console.error('Error processing form submission:', e);
       res.status(500).json({ error: 'Error processing form submission' });
     }
   });
