@@ -109,14 +109,14 @@ async function handleFormSubmission(body) {
   const transporter = nodemailer.createTransport({
     host: 'ronward.sakura.ne.jp',
     port: 587,
-    secure: false, // Set to false for STARTTLS
-    requireTLS: true, // Ensure TLS is used
+    secure: false, 
+    requireTLS: true, 
     auth: {
-      user: 'hello@bluestar-english.com',
-      pass: 'MyLight*1980!',
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
-    logger: true, // Enable detailed logging
-    debug: true   // Show debug output
+    logger: true, 
+    debug: true   
   });
 
   const mailOptions = {
