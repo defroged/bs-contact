@@ -113,7 +113,7 @@ async function handleFormSubmission(body) {
     requireTLS: true, // Ensure TLS is used
     auth: {
       user: 'hello@bluestar-english.com',
-      pass: 'MyLight*1980!!',
+      pass: 'MyLight*1980!',
     },
     logger: true, // Enable detailed logging
     debug: true   // Show debug output
