@@ -112,8 +112,8 @@ async function handleFormSubmission(body) {
     secure: false, // Set to false for STARTTLS
     requireTLS: true, // Ensure TLS is used
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
+      user: 'hello@bluestar-english.com',
+      pass: 'SaoRon0207!',
     },
     logger: true, // Enable detailed logging
     debug: true   // Show debug output
