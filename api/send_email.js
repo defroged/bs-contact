@@ -112,7 +112,7 @@ async function handleFormSubmission(body) {
     secure: false, // Set to false for STARTTLS
     requireTLS: true, // Ensure TLS is used
     auth: {
-      user: 'hello@bluestar-english.com',
+      user: 'hello@ronward.sakura.ne.jp',
       pass: 'SaoRon0207!',
     },
     logger: true, // Enable detailed logging
